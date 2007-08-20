@@ -13,7 +13,7 @@ License:   GPL
 URL:         http://sourceforge.net/projects/aide
 Group:       Networking/Other
 Buildrequires: flex glibc-devel glibc-static-devel
-BuildPreReq: libmhash-devel zlib-devel bison
+BuildRequires: libmhash-devel zlib-devel bison
 
 %description
 
