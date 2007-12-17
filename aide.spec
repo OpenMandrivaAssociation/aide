@@ -8,7 +8,6 @@ Version:     %{version}
 Release:     %{release}
 Source0:     http://prdownloads.sourceforge.net/aide/%{name}-%{version}.tar.bz2
 Source1:     %{name}.extra-0.7.tar.bz2
-BuildRoot:   %{_tmppath}/%{name}-buildroot
 License:   GPL
 URL:         http://sourceforge.net/projects/aide
 Group:       Networking/Other
