@@ -16,24 +16,23 @@ Buildrequires: flex glibc-devel glibc-static-devel
 BuildRequires: libmhash-devel zlib-devel bison
 
 %description
+AIDE (Advanced Intrusion Detection Environment) is a free replacement for
+Tripwire. It does the same things as the semi-free Tripwire and more.
 
-  AIDE (Advanced Intrusion Detection Environment) is a free replacement for
-  Tripwire. It does the same things as the semi-free Tripwire and more.
+There are other free replacements available so why build a new one? All the
+other replacements do not achieve the level of Tripwire. And I wanted a
+program that would exceed the limitations of Tripwire.
 
-  There are other free replacements available so why build a new one? All the
-  other replacements do not achieve the level of Tripwire. And I wanted a
-  program that would exceed the limitations of Tripwire.
+The idea is that for an intruder to get in, certain files on the system must
+change - configuration files, for example. And once an intruder is in, in
+order to do much useful, the intruder must gain root access - something else
+that requires changing files. aide ensures that you (root) can be notified of
+ANY changes to a configurable list of properties (modification date, size,
+various hash-values) of a configurable list files.
 
-  The idea is that for an intruder to get in, certain files on the system must
-  change - configuration files, for example. And once an intruder is in, in
-  order to do much useful, the intruder must gain root access - something else
-  that requires changing files. aide ensures that you (root) can be notified of
-  ANY changes to a configurable list of properties (modification date, size,
-  various hash-values) of a configurable list files.
-
-  Aide should be installed right after the OS installation, and before
-  you have connected your system to a network (i.e., before any
-  possibility exists that someone could alter files on your system).
+Aide should be installed right after the OS installation, and before
+you have connected your system to a network (i.e., before any
+possibility exists that someone could alter files on your system).
 
 %prep
     [ -n "${RPM_BUILD_ROOT}" -a "${RPM_BUILD_ROOT}" != / ] \
