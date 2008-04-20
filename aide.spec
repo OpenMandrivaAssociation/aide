@@ -1,103 +1,105 @@
-%define name aide
-%define version 0.13
-%define release %mkrel 1
+#
+# spec file for package aide
+#
+# Package for Mandriva Linux: http://www.mandriva.com/
+#
+# Please submit bugfixes or comments via https://qa.mandriva.com/
+#
+# $Id$
+#
+# vim: expandtab:shiftwidth=8:tabstop=8:softtabstop=8
 
-Summary:     Advanced Intrusion Detection Environment
-Name:        %{name}
-Version:     %{version}
-Release:     %{release}
-Source0:     http://prdownloads.sourceforge.net/aide/%{name}-%{version}.tar.bz2
-Source1:     %{name}.extra-0.7.tar.bz2
-BuildRoot:   %{_tmppath}/%{name}-buildroot
-License:   GPL
-URL:         http://sourceforge.net/projects/aide
-Group:       Networking/Other
-Buildrequires: flex glibc-devel glibc-static-devel
-BuildRequires: libmhash-devel zlib-devel bison
+%define name		aide
+%define version		0.13.1
+%define release		%mkrel 1
+
+Summary:	Advanced Intrusion Detection Environment
+Name:		%{name}
+Version:	%{version}
+Release:	%{release}
+License:	GPL
+Group:		Monitoring
+URL:		http://sourceforge.net/projects/aide
+Source0:	http://prdownloads.sourceforge.net/aide/%{name}-%{version}.tar.gz
+Source1:	http://prdownloads.sourceforge.net/aide/%{name}-%{version}.tar.gz.asc
+Source2:	aide.conf
+Source3:	aidecheck
+Source4:	aideupdate
+Source5:	aideinit
+Source6:	aideinit.8
+
+Buildrequires:	flex
+BuildRequires:	glibc-devel
+BuildRequires:	glibc-static-devel
+BuildRequires:	mhash-devel
+BuildRequires:	zlib-devel
+BuildRequires:	bison
+BuildRoot:	%{_tmppath}/%{name}-%{version}
+
+Requires:	gnupg
 
 %description
-AIDE (Advanced Intrusion Detection Environment) is a free replacement for
-Tripwire. It does the same things as the semi-free Tripwire and more.
+AIDE (Advanced Intrusion Detection Environment) is a free alternative to
+Tripwire. It does the same things as the semi-free Tripwire and more.  It
+is a file system integrity monitoring tool.
 
-There are other free replacements available so why build a new one? All the
-other replacements do not achieve the level of Tripwire. And I wanted a
-program that would exceed the limitations of Tripwire.
-
-The idea is that for an intruder to get in, certain files on the system must
-change - configuration files, for example. And once an intruder is in, in
-order to do much useful, the intruder must gain root access - something else
-that requires changing files. aide ensures that you (root) can be notified of
-ANY changes to a configurable list of properties (modification date, size,
-various hash-values) of a configurable list files.
-
-Aide should be installed right after the OS installation, and before
-you have connected your system to a network (i.e., before any
-possibility exists that someone could alter files on your system).
 
 %prep
-    [ -n "${RPM_BUILD_ROOT}" -a "${RPM_BUILD_ROOT}" != / ] \
-    && rm -rf ${RPM_BUILD_ROOT}/
+%setup -q
 
-%setup -T -b 0
-%setup -T -D -a 1
-
-%configure 	--prefix=%{_prefix} \
-			--sysconfdir=/etc \
-            --with-config_file=/etc/aide.conf \
-            --with-zlib \
-            --with-mhash \
-            --enable-mhash 
-
-    grep -v "#define DEFAULT_DB" config.h                      > config.h.tmp
-    echo '#define DEFAULT_DB "/var/lib/aide/aide.db"'         >> config.h.tmp
-    echo '#define DEFAULT_DB_OUT "/var/lib/aide/aide.db.new"' >> config.h.tmp
-    mv -f config.h.tmp config.h
 
 %build
-    make
+%configure \
+    --with-config-file=%{_sysconfdir}/aide.conf \
+    --with-zlib \
+    --with-mhash \
+    --enable-mhash \
+    --with-syslog_facility=LOG_LOCAL1
+
+perl -pi -e 's|/etc/aide.db|/var/lib/aide/aide.db|g' config.h
+
+%make
 
 %install
-    mkdir -p ${RPM_BUILD_ROOT}/etc/cron.daily
-    mkdir -p ${RPM_BUILD_ROOT}%{_prefix}/sbin
-    mkdir -p ${RPM_BUILD_ROOT}%{_mandir}/man1 
-    mkdir -p ${RPM_BUILD_ROOT}%{_mandir}/man5 
+[ -n "%{buildroot}" -a "%{buildroot}" != / ] && rm -rf %{buildroot}
 
-    make prefix=$RPM_BUILD_ROOT%{_prefix} \
-	 bindir=${RPM_BUILD_ROOT}%{_sbindir} \
-	 mandir=${RPM_BUILD_ROOT}%{_mandir} \
-	 install-strip
+make prefix=%{buildroot}%{_prefix} \
+    bindir=%{buildroot}%{_sbindir} \
+    mandir=%{buildroot}%{_mandir} \
+    install-strip
 
-    mkdir -p -m 700 ${RPM_BUILD_ROOT}/var/lib/aide
+mkdir -p %{buildroot}{/var/lib/aide/reports,%{_sysconfdir}/cron.daily,%{_mandir}/man8}
 
-    install -m 700 ./extra/aide.check $RPM_BUILD_ROOT/etc/cron.daily
+install -m 0600 %{_sourcedir}/aide.conf %{buildroot}%{_sysconfdir}/aide.conf
+install -m 0700 %{_sourcedir}/aidecheck %{buildroot}%{_sbindir}/aidecheck
+install -m 0700 %{_sourcedir}/aideupdate %{buildroot}%{_sbindir}/aideupdate
+install -m 0700 %{_sourcedir}/aideinit %{buildroot}%{_sbindir}/aideinit
+install -m 0644 %{_sourcedir}/aideinit.8 %{buildroot}%{_mandir}/man8/aideinit.8
+ln -sf ../..%{_sbindir}/aidecheck %{buildroot}%{_sysconfdir}/cron.daily/aide
 
-    chmod 700 $RPM_BUILD_ROOT/var/lib/aide
-    chmod 700 $RPM_BUILD_ROOT/usr/sbin/*
 
 %post
-    echo "****************************************************************"
-    echo "* You should now set up an /etc/aide.conf to your              *"
-    echo "* system and run '/usr/sbin/aide --init'                       *"
-    echo "* (there is an example in /usr/share/doc/aide-0.9/aide.conf.in *"
-    echo "*                                                              *"
-    echo "* Then copy /etc/aide.conf, /usr/sbin/aide,                    *"
-    echo "* and aide.db.new to a secure location                         *"
-    echo "* (preferably read-only media)                                 *"
-    echo "****************************************************************"
+echo "*********************************************************"
+echo "* Please see aideinit(8) for information on how to setup"
+echo "* AIDE+gpg which this AIDE implementation uses by default"
+echo "*********************************************************"
+
 
 %clean
-  [ -n "${RPM_BUILD_ROOT}" -a "${RPM_BUILD_ROOT}" != / ] \
-  && rm -rf ${RPM_BUILD_ROOT}/
+[ -n "%{buildroot}" -a "%{buildroot}" != / ] && rm -rf %{buildroot}
+
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS COPYING ChangeLog NEWS README ./doc/manual.html ./extra/aide.html
-%doc doc/aide.conf.in
-%{_sbindir}/aide
-%{_mandir}/man1/*
-%{_mandir}/man5/*
-/var/lib/aide
-%defattr(0644,root,root,755)
-%config(noreplace) /etc/cron.daily/aide.check
-
-
+%doc AUTHORS COPYING ChangeLog NEWS README doc/aide.conf.in
+%attr(0700,root,root) %{_sbindir}/aide
+%attr(0700,root,root) %{_sbindir}/aidecheck
+%attr(0700,root,root) %{_sbindir}/aideinit
+%attr(0700,root,root) %{_sbindir}/aideupdate
+%{_mandir}/man1/aide.1*
+%{_mandir}/man5/aide.conf.5*
+%{_mandir}/man8/aideinit.8*
+%dir %attr(0700,root,root) /var/lib/aide
+%dir %attr(0700,root,root) /var/lib/aide/reports
+%attr(0700,root,root) %{_sysconfdir}/cron.daily/aide
+%config(noreplace) %attr(0600,root,root) %{_sysconfdir}/aide.conf
