@@ -11,7 +11,7 @@
 
 %define name		aide
 %define version		0.13.1
-%define release		%mkrel 1
+%define release		%mkrel 2
 
 Summary:	Advanced Intrusion Detection Environment
 Name:		%{name}
