@@ -11,13 +11,13 @@
 
 %define name		aide
 %define version		0.13.1
-%define release		%mkrel 2
+%define release		%mkrel 3
 
 Summary:	Advanced Intrusion Detection Environment
 Name:		%{name}
 Version:	%{version}
 Release:	%{release}
-License:	GPL
+License:	GPLv2+
 Group:		Monitoring
 URL:		http://sourceforge.net/projects/aide
 Source0:	http://prdownloads.sourceforge.net/aide/%{name}-%{version}.tar.gz
