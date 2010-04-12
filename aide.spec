@@ -1,22 +1,7 @@
-#
-# spec file for package aide
-#
-# Package for Mandriva Linux: http://www.mandriva.com/
-#
-# Please submit bugfixes or comments via https://qa.mandriva.com/
-#
-# $Id$
-#
-# vim: expandtab:shiftwidth=8:tabstop=8:softtabstop=8
-
-%define name		aide
-%define version		0.13.1
-%define release		%mkrel 3
-
 Summary:	Advanced Intrusion Detection Environment
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}
+Name:		aide
+Version:	0.14
+Release:	%mkrel 1
 License:	GPLv2+
 Group:		Monitoring
 URL:		http://sourceforge.net/projects/aide
@@ -27,7 +12,8 @@ Source3:	aidecheck
 Source4:	aideupdate
 Source5:	aideinit
 Source6:	aideinit.8
-
+#p0 sent upstream by kharec
+patch0:		aide-0.14-fix-str-fmt.patch
 Buildrequires:	flex
 BuildRequires:	glibc-devel
 BuildRequires:	glibc-static-devel
@@ -46,7 +32,7 @@ is a file system integrity monitoring tool.
 
 %prep
 %setup -q
-
+%patch0 -p0
 
 %build
 %configure \
@@ -61,7 +47,7 @@ perl -pi -e 's|/etc/aide.db|/var/lib/aide/aide.db|g' config.h
 %make
 
 %install
-[ -n "%{buildroot}" -a "%{buildroot}" != / ] && rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 make prefix=%{buildroot}%{_prefix} \
     bindir=%{buildroot}%{_sbindir} \
@@ -86,7 +72,7 @@ echo "*********************************************************"
 
 
 %clean
-[ -n "%{buildroot}" -a "%{buildroot}" != / ] && rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 
 %files
