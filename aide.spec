@@ -1,6 +1,6 @@
 Summary:	Advanced Intrusion Detection Environment
 Name:		aide
-Version:	0.14
+Version:	0.14.2
 Release:	%mkrel 1
 License:	GPLv2+
 Group:		Monitoring
@@ -13,7 +13,7 @@ Source4:	aideupdate
 Source5:	aideinit
 Source6:	aideinit.8
 #p0 sent upstream by kharec
-patch0:		aide-0.14-fix-str-fmt.patch
+patch0:		aide-0.14.2-fix-str-fmt.patch
 Buildrequires:	flex
 BuildRequires:	glibc-devel
 BuildRequires:	glibc-static-devel
