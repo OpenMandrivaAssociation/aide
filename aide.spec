@@ -1,6 +1,6 @@
 Summary:	Advanced Intrusion Detection Environment
 Name:		aide
-Version:	0.15
+Version:	0.15.1
 Release:	%mkrel 1
 License:	GPLv2+
 Group:		Monitoring
@@ -35,11 +35,10 @@ is a file system integrity monitoring tool.
 %patch0 -p0
 
 %build
-%configure \
+%configure2_5x \
     --with-config-file=%{_sysconfdir}/aide.conf \
     --with-zlib \
     --with-mhash \
-    --enable-mhash \
     --with-syslog_facility=LOG_LOCAL1
 
 perl -pi -e 's|/etc/aide.db|/var/lib/aide/aide.db|g' config.h
