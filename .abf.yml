@@ -1,0 +1,8 @@
+sources:
+  "aide-0.15.1.tar.gz:"	c5998c04a223416142323fa1bd18db0936099827
+  "aide-0.15.1.tar.gz.asc:"	b03f837c1275fa504ada990e9193aaf946c61e39
+  "aidecheck:"	5bebaa1bbbea05ab3ac65661319011897e396d4d
+  "aide.conf:"	84938049bf30930358429f28bae2b51bd3fca176
+  "aideinit:"	4378f31c8ee7f9237da05123964c1d343c194265
+  "aideinit.8:"	ba44f2e96bcc349c5a6da7f7bd8c99d3f2c8c198
+  "aideupdate:"	fc24cf50babd241f38f548a4ae4a70be542d3b41
