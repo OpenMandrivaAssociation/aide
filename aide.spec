@@ -1,19 +1,16 @@
 Summary:	Advanced Intrusion Detection Environment
 Name:		aide
-Version:	0.15.1
-Release:	3
+Version:	0.16.2
+Release:	1
 License:	GPLv2+
 Group:		Monitoring
-URL:		http://sourceforge.net/projects/aide
-Source0:	http://prdownloads.sourceforge.net/aide/%{name}-%{version}.tar.gz
-Source1:	http://prdownloads.sourceforge.net/aide/%{name}-%{version}.tar.gz.asc
+URL:		http://aide.github.io/
+Source0:	https://github.com/aide/aide/releases/download/v%{version}/aide-%{version}.tar.gz
 Source2:	aide.conf
 Source3:	aidecheck
 Source4:	aideupdate
 Source5:	aideinit
 Source6:	aideinit.8
-#p0 sent upstream by kharec
-Patch0:		aide-0.15-fix-str-fmt.patch
 BuildRequires:	bison
 Buildrequires:	flex
 BuildRequires:	glibc-devel
@@ -50,11 +47,10 @@ echo "*********************************************************"
 #----------------------------------------------------------------------------
 
 %prep
-%setup -q
-%patch0 -p0
+%autosetup -p1
 
 %build
-%configure2_5x \
+%configure \
 	--with-config-file=%{_sysconfdir}/aide.conf \
 	--with-zlib \
 	--with-mhash \
@@ -62,7 +58,7 @@ echo "*********************************************************"
 
 perl -pi -e 's|/etc/aide.db|/var/lib/aide/aide.db|g' config.h
 
-%make
+%make_build
 
 %install
 make prefix=%{buildroot}%{_prefix} \
