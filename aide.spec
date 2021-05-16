@@ -1,6 +1,6 @@
 Summary:	Advanced Intrusion Detection Environment
 Name:		aide
-Version:	0.16.2
+Version:	0.17.3
 Release:	1
 License:	GPLv2+
 Group:		Monitoring
@@ -25,7 +25,7 @@ Tripwire. It does the same things as the semi-free Tripwire and more. It
 is a file system integrity monitoring tool.
 
 %files
-%doc AUTHORS COPYING ChangeLog NEWS README doc/aide.conf.in
+%doc AUTHORS COPYING ChangeLog NEWS README
 %attr(0700,root,root) %{_sbindir}/aide
 %attr(0700,root,root) %{_sbindir}/aidecheck
 %attr(0700,root,root) %{_sbindir}/aideinit
