@@ -17,6 +17,7 @@ BuildRequires:	glibc-devel
 BuildRequires:	glibc-static-devel
 BuildRequires:	mhash-devel
 BuildRequires:	pkgconfig(zlib)
+BuildRequires:	pkgconfig(libpcre)
 Requires:	gnupg
 
 %description
