@@ -4,7 +4,7 @@ Version:	0.17.4
 Release:	1
 License:	GPLv2+
 Group:		Monitoring
-URL:		http://aide.github.io/
+URL:		https://aide.github.io/
 Source0:	https://github.com/aide/aide/releases/download/v%{version}/aide-%{version}.tar.gz
 Source2:	aide.conf
 Source3:	aidecheck
