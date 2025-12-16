@@ -1,6 +1,6 @@
 Summary:	Advanced Intrusion Detection Environment
 Name:		aide
-Version:	0.19
+Version:	0.19.2
 Release:	1
 License:	GPLv2+
 Group:		Monitoring
