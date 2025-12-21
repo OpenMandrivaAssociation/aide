@@ -11,6 +11,11 @@ Source3:	aidecheck
 Source4:	aideupdate
 Source5:	aideinit
 Source6:	aideinit.8
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	bison
 Buildrequires:	flex
 BuildRequires:	glibc-devel
